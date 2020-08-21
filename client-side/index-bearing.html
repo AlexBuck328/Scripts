@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+
+    <title>Module 03 Turf.js</title>
+    <link href="https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.css" rel="stylesheet" />
+
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            width: 100%;
+            top: 0;
+            bottom: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+
+    <script src="https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.js"></script>
+    <script src="https://d3js.org/d3-fetch.v1.min.js"></script>
+    <script src="https://unpkg.com/topojson@3"></script>
+    <script src="https://npmcdn.com/@turf/turf/turf.min.js"></script>
+    <script>
+        var map = L.map("map", {
+            zoomSnap: 0.1,
+            center: [46.56645, -110.32422],
+            zoom: 6.9
+        });
+
+        // mapbox access token
+        var accessToken =
+            "pk.eyJ1IjoiYWxleGJ1Y2szMjgiLCJhIjoiY2szcDZsdmFsMW9rbDNubjMydm9rNGJpMyJ9.05szss9EHEoVBbGYajbPZA";
+
+        // add mapbox tile layers using access token
+        L.tileLayer(
+            "https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=" +
+            accessToken, {
+                attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+                maxZoom: 18,
+                id: "mapbox.light",
+                accessToken: accessToken
+            }
+        ).addTo(map);
+
+        const glaciersData = d3.json('../data/mt-glaciers.json');
+        const montanaData = d3.json('../data/mt-state.json')
+
+        // use Promise to wait until data is all loaded
+        Promise.all([glaciersData, montanaData]).then(drawMap);
+
+        function drawMap(data) {
+
+            console.log(data)
+
+            // add to our map
+            var montana = L.geoJson(data, {
+                style: function (feature, layer) {
+                    return {
+                        color: "white",
+                        fillColor: "#448ee4",
+                        fillOpacity: ".7",
+                        weight: 1
+                    };
+                }
+
+
+            }).addTo(map);
+
+            var glaciers = L.marker(glaciers)
+
+        } // end drawMap
+
+        function bearingToCentroid(data, glaciers) {
+            // access to the county layer and address feature here
+            console.log(glaciers)
+            console.log(data)
+
+            // coordinates for center point
+            var polygon = turf.polygon(montanaJson.geometry.coordinates);
+            console.log(polygon)
+
+            // point feature at center of polygon
+            var center = turf.centerOfMass(polygon);
+            console.log(center)
+
+            // add centerPoint marker to map
+            var centerPoint = L.geoJson(center).addTo(map);
+
+            // find bearing between the two points
+            var point1 = turf.point(glaciers);
+            var point2 = turf.point(center.geometry.coordinates);
+
+
+            var bearing = turf.bearing(point2, point1);
+            console.log(bearing)
+
+            // add bearing to centroid tooltip
+            centerPoint.bindTooltip(
+                    `<b>Bearing from County Center to Selected Location:</b> ${bearing.toLocaleString()}`)
+                .openTooltip();
+
+        } // end findDistance
+    </script>
+</body>
+
+</html>

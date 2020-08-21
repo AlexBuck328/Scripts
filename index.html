@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+
+    <title>Montana Glaciers</title>
+    <link href="https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.css" rel="stylesheet" />
+
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            width: 100%;
+            top: 0;
+            bottom: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+
+    <script src="https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.js"></script>
+    <script src="https://d3js.org/d3-fetch.v1.min.js"></script>
+    <script src="https://unpkg.com/topojson@3"></script>
+    <script src="https://npmcdn.com/@turf/turf/turf.min.js"></script>
+    <script>
+        var map = L.map("map", {
+            zoomSnap: 0.1,
+            center: [46.5731, -109.9658],
+            zoom: 7
+        });
+
+        // mapbox access token
+        var accessToken =
+            "pk.eyJ1IjoiYWxleGJ1Y2szMjgiLCJhIjoiY2szcDZsdmFsMW9rbDNubjMydm9rNGJpMyJ9.05szss9EHEoVBbGYajbPZA";
+
+        // add mapbox tile layers using access token
+        L.tileLayer(
+            "https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=" +
+            accessToken, {
+                attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+                maxZoom: 18,
+                id: "mapbox.light",
+                accessToken: accessToken
+            }
+        ).addTo(map);
+
+        // create a geocoder control object with options
+        var geoCoderControl = L.mapbox.geocoderControl("mapbox.places", {
+            accessToken: accessToken,
+            keepOpen: true,
+            autocomplete: true,
+            position: "topright"
+        });
+
+        // add the geocoder to the map
+        map.addControl(geoCoderControl);
+
+        d3.json("data/mt-glaciers.json").then(function (data) {
+            //    console.log(data);
+            drawMap(data);
+        });
+
+        function drawMap(data) {
+            // verify data
+            console.log(data)
+
+            var glacierPoints = [];
+
+            for (var i = 0; i < data.length; i++) {
+
+                var point = geometry.coordinates
+
+                console.log(point)
+            }
+        }
+    </script>
