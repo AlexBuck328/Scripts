@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8" />
 
-    <title>Module 03 Turf.js</title>
+    <title>Montana Glaciers</title>
     <link href="https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.css" rel="stylesheet" />
 
     <style>
@@ -53,18 +53,23 @@
             }
         ).addTo(map);
 
-        const glaciersData = d3.json('../data/mt-glaciers.json');
+        const glacierData = d3.json('../data/mt-glaciers.json');
         const montanaData = d3.json('../data/mt-state.json')
 
         // use Promise to wait until data is all loaded
-        Promise.all([glaciersData, montanaData]).then(drawMap);
+        Promise.all([glacierData, montanaData]).then(drawMap);
 
         function drawMap(data) {
 
             console.log(data)
 
+            const glacier = data[0];
+            const mtState = data[1];
+
+            console.log(glacier)
+
             // add to our map
-            var montana = L.geoJson(data, {
+            var montana = L.geoJson(mtState, {
                 style: function (feature, layer) {
                     return {
                         color: "white",
@@ -77,7 +82,19 @@
 
             }).addTo(map);
 
-            var glaciers = L.marker(glaciers)
+          var glacInfo =  glacier.features.forEach(function(feature) {
+                let glacierInfo = feature.properties.FEATURE_NAME
+                console.log(glacierInfo)
+            })
+            
+
+            var glacierPoints = L.geoJson(glacier)
+
+            glacierPoints.addTo(map)
+
+            glacierPoints.bindTooltip(glacInfo)
+
+
 
         } // end drawMap
 
