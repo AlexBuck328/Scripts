@@ -100,15 +100,17 @@
 
                 // listen for user click
                 marker.on('click', function (ev) {
-                // get marker coordinates
-                console.log(ev.latlng);
+                    // get marker coordinates
+                    console.log(ev.latlng);
 
-                var coords = ev.latlng
-                clickedCoords.add(coords)
-                });
+                    var coords = ev.latlng
+                    clickedCoords.push(coords)
+                    //getCoords(coords)
+                }); // end event listener
+
 
             })
-            
+
             var clickedCoords = [];
             console.log(clickedCoords)
 
@@ -139,7 +141,7 @@
 
 
             // find bearing between the two points
-            var point1 = turf.point(glacier);
+            var point1 = turf.point(clickedCoords[0]);
             var point2 = turf.point(center.geometry.coordinates);
 
             console.log(point2)
