@@ -66,15 +66,13 @@
             const glacier = data[0];
             const mtState = data[1];
 
-            console.log(glacier)
-
-            // add to our map
+            // add Montana to our map
             var montana = L.geoJson(mtState, {
                 style: function (feature, layer) {
                     return {
-                        color: "white",
+                        color: "gray",
                         fillColor: "#448ee4",
-                        fillOpacity: ".7",
+                        fillOpacity: ".4",
                         weight: 1
                     };
                 }
@@ -82,18 +80,23 @@
 
             }).addTo(map);
 
-          var glacInfo =  glacier.features.forEach(function(feature) {
+            // create glacier point markers, tooltip and add that cool info to map
+            var glacierPoints = glacier.features.forEach(function (feature) {
+
+                // create a new Leaflet marker for each
+                let coords = feature.geometry.coordinates;
+                let marker = L.marker([coords[1], coords[0]]);
+
+                // access to tooltip info
                 let glacierInfo = feature.properties.FEATURE_NAME
-                console.log(glacierInfo)
+                let elevation = feature.properties.ELEV_IN_FT
+
+                // bind tooltip info to markers
+                marker.bindTooltip(`<b>Name:</b> ${glacierInfo} <br> <b>Elevation:</b> ${elevation.toLocaleString()}`)
+
+                // add all the nifty stuff to the map
+                marker.addTo(map)
             })
-            
-
-            var glacierPoints = L.geoJson(glacier)
-
-            glacierPoints.addTo(map)
-
-            glacierPoints.bindTooltip(glacInfo)
-
 
 
         } // end drawMap
