@@ -183,20 +183,21 @@
                 var div = L.DomUtil.create('div', 'legend');
                 let legendTitle = "Glacier Count";
 
-                // first append an <h3> tag to the div holding the current attribute
-                // and norm values (i.e., the mapped phenomena)
+                // first append an <h3> tag to the div 
                 div.innerHTML = "<h3>" + legendTitle + "</h3>";
 
-                // Add a select drop down. The function is defined below and passes the value in the drop down.
+                // Add color coded legend items
                 div.innerHTML +=
-                    `<span style="background: ${colorize(breaks[0])}"></span> <br>${breaks[0]} to ${breaks[1]}<br>
-                    <span style="background: ${colorize(breaks[1])}"></span> <br>${breaks[1]} to ${breaks[2]}<br>
-                    <span style="background: ${colorize(breaks[2])}"></span> <br>${breaks[2]} to ${breaks[3]}<br>
-                    <span style="background: ${colorize(breaks[3])}"></span> <br>${breaks[3]} to ${breaks[4]}<br>
-                    <span style="background: ${colorize(breaks[4])}"></span> <br>${breaks[4]} to ${breaks[5]}`;
-
-                console.log(breaks)
-
+                    `<span style="background: ${colorize(breaks[0])}"></span> <br>${Math.round(breaks[0])} to
+                    ${Math.round(breaks[1])}<br>
+                    <span style="background: ${colorize(breaks[1])}"></span> <br>${Math.round(breaks[1]) + 1} to
+                    ${Math.round(breaks[2])}<br>
+                    <span style="background: ${colorize(breaks[2])}"></span> <br>${Math.round(breaks[2] + 1)} to
+                    ${Math.round(breaks[3])}<br>
+                    <span style="background: ${colorize(breaks[3])}"></span> <br>${Math.round(breaks[3]) + 1} to
+                    ${Math.round(breaks[4])}<br>
+                    <span style="background: ${colorize(breaks[4])}"></span> <br>${Math.round(breaks[4]) + 1} to
+                    ${breaks[5]}`;
 
                 // return the populated div to be added to the map
                 return div;
@@ -204,7 +205,9 @@
 
             // add the legend to the map
             legend.addTo(map);
+
         } //end drawLegend
+
 
         function drawAbout() {
             // create a new Leaflet control object, and position it bottom left
@@ -219,11 +222,10 @@
                 var div = L.DomUtil.create('div', 'legend');
                 let legendTitle = "About";
 
-                // first append an <h3> tag to the div holding the current attribute
-                // and norm values (i.e., the mapped phenomena)
+                // first append an <h3> tag 
                 div.innerHTML = "<h3>" + legendTitle + "</h3>";
 
-                // Add a select drop down. The function is defined below and passes the value in the drop down.
+                // Add description of map
                 div.innerHTML +=
                     `<p>Glaciers are pretty cool. Unfortunately they're not staying that way. <br>As a result, they're
                         shrinking. Soon, Glacier National Park <br>(located in Montana) will not have any of the
@@ -235,12 +237,15 @@
 
             // add the legend to the map
             legend.addTo(map);
+
         } //end drawAbout
 
+        // add zoom control 
         L.control.zoom({
             position: 'bottomright',
             fillColor: 'whitesmoke',
         }).addTo(map)
+
     </script>
 </body>
 
