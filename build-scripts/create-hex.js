@@ -12,7 +12,7 @@ fs.readFile(__dirname + "/../data/mt-glaciers.json", "utf8", (err, data) => {
 });
 
 function createHexGrid(glaciers) {
-    console.log(glaciers); // output will be limited in the terminal
+    console.log(glaciers);
     
     // Montana bounding box
     // [ minX, minY, maxX, maxY ]
