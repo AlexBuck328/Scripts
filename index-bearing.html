@@ -164,22 +164,28 @@
                 marker.on('click', function (ev) {
                     // get marker coordinates
                     console.log(feature.geometry.coordinates);
+                    
+                    // get clicked glacier name
+                    console.log(feature.properties.FEATURE_NAME)
 
                     var clickedGlacierCoords = feature.geometry.coordinates
 
-                    getCoords(clickedGlacierCoords, mtState, glacier)
+                    var clickedGlacierName = feature.properties.FEATURE_NAME
+
+                    getCoords(clickedGlacierName, clickedGlacierCoords, mtState, glacier)
                 }); // end event listener
 
             })
 
-            function getCoords(clickedGlacierCoords) {
+            function getCoords(clickedGlacierName, clickedGlacierCoords) {
                 //verify access to info
                 console.log(clickedGlacierCoords)
+                console.log(clickedGlacierName)
                 console.log(mtState)
                 console.log(glacier)
 
                 //call bearingToCentroid
-                bearingToCentroid(clickedGlacierCoords, mtState, glacier);
+                bearingToCentroid(clickedGlacierName,clickedGlacierCoords, mtState, glacier);
             }
 
             // Call function to draw map instructions
@@ -218,11 +224,12 @@
         } //end drawInstructions
 
 
-        function bearingToCentroid(clickedGlacierCoords, mtState, glacier) { //coords,
+        function bearingToCentroid(clickedGlacierName, clickedGlacierCoords, mtState, glacier) { //coords,
             // access to mtState, coords and glacier here
             console.log(glacier)
             console.log(mtState)
             console.log(clickedGlacierCoords)
+            console.log(clickedGlacierName)
 
             // coordinates for center point
             var polygon = turf.polygon(mtState.features[0].geometry.coordinates);
@@ -239,14 +246,13 @@
             var point1 = turf.point(clickedGlacierCoords);
             var point2 = turf.point(center.geometry.coordinates);
 
-            //    console.log(point2)
-
+            // bearing from center to clicked glacier
             var bearing = turf.bearing(point2, point1);
             console.log(bearing)
 
             // add bearing to centroid tooltip
             centerPoint.bindTooltip(
-                    `<i>Montana State Center Marker<i><br><b>Bearing to Selected Glacier:</b> ${bearing.toLocaleString()}`
+                    `<i>Montana State Center Marker<i><br><b>Bearing to ${clickedGlacierName}:</b> ${bearing.toLocaleString()}`
                 )
                 .openTooltip();
 
