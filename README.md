@@ -25,4 +25,4 @@ I then used the process-csv.js script to filter the GNIS data to reflect the Fea
 
 This file uses the mt-hexgrid-glaciers-15.json created with the create-hex.js script to provide visual represntation of glaciers across Montana. As the map displays, the highest density of glaciers is located within the parks boundaries. 
 
-![Glaciers] (images/glacier-hex.png)
+![Glaciers](images/glacier-hex.png)
