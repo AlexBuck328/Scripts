@@ -32,3 +32,5 @@ This file uses the mt-hexgrid-glaciers-15.json created with the create-hex.js sc
 ### index-bearing.html
 
 This file displays glacier locations as leaflet markers and a centroid marker for the center of Montana. When the user clicks on a glacier marker, the bearing from the Montana's centroid to the selected marker is displayed.
+
+![Glacier-Bearing](images/Glacier-Bearing.png)

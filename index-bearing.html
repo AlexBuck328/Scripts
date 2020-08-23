@@ -29,7 +29,7 @@
             font-size: 2.75em;
             position: absolute;
             text-align: center;
-            left: 9px;
+            right: 9px;
             padding: 6px 8px;
             z-index: 1000;
             background: rgba(256, 256, 256, .8);
@@ -57,6 +57,13 @@
             color: Gray;
         }
 
+        .legend h1 {
+            font-family: 'Cinzel', Cursive;
+            font-size: 2.75em;
+            color: Gray;
+            text-align: center;
+        }
+
         .legend h3 {
             font-size: 1.5em;
             font-family: 'Cinzel', Cursive;
@@ -80,6 +87,7 @@
 </head>
 
 <body>
+    <h1>Point me to those glaciers!</h1>
     <div id="map"></div>
 
     <script src="https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.js"></script>
@@ -90,7 +98,7 @@
         var map = L.map("map", {
             zoomSnap: 0.1,
             center: [46.56645, -110.32422],
-            zoom: 6.9
+            zoom: 6.9,
         });
 
         // mapbox access token
@@ -174,11 +182,13 @@
                 bearingToCentroid(clickedGlacierCoords, mtState, glacier);
             }
 
-            drawAbout();
+            // Call function to draw map instructions
+            drawInstructions();
 
         } // end drawMap
 
-        function drawAbout() {
+
+        function drawInstructions() {
             // create a new Leaflet control object, and position it bottom left
             var legend = L.control({
                 position: 'bottomleft'
@@ -189,7 +199,7 @@
 
                 // create a new HTML <div> element and give it a class name of "legend"
                 var div = L.DomUtil.create('div', 'legend');
-                let legendTitle = "About";
+                let legendTitle = "Instructions";
 
                 // first append an <h3> tag to the div holding the current attribute
                 // and norm values (i.e., the mapped phenomena)
@@ -205,8 +215,7 @@
 
             // add the legend to the map
             legend.addTo(map);
-        } //end drawAbout
-
+        } //end drawInstructions
 
 
         function bearingToCentroid(clickedGlacierCoords, mtState, glacier) { //coords,
