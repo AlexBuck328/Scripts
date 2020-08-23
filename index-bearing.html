@@ -53,8 +53,8 @@
             }
         ).addTo(map);
 
-        const glacierData = d3.json('../data/mt-glaciers.json');
-        const montanaData = d3.json('../data/mt-state.json')
+        const glacierData = d3.json('data/mt-glaciers.json');
+        const montanaData = d3.json('data/mt-state.json')
 
         // use Promise to wait until data is all loaded
         Promise.all([glacierData, montanaData]).then(drawMap);
