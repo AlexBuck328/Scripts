@@ -72,11 +72,10 @@
                     return {
                         color: "gray",
                         fillColor: "#448ee4",
-                        fillOpacity: ".4",
+                        fillOpacity: ".3",
                         weight: 1
                     };
                 }
-
 
             }).addTo(map);
 
@@ -89,7 +88,7 @@
 
                 // access to tooltip info
                 let glacierInfo = feature.properties.FEATURE_NAME
-                let elevation = feature.properties.ELEV_IN_FT
+                let elevation = Number(feature.properties.ELEV_IN_FT)
 
                 // bind tooltip info to markers
                 marker.bindTooltip(
@@ -101,32 +100,34 @@
                 // listen for user click
                 marker.on('click', function (ev) {
                     // get marker coordinates
-                    console.log(ev.latlng);
+                    console.log(feature.geometry.coordinates); 
 
-                    var coords = feature.geometry.coordinates
-                    clickedCoords.push(coords)
+                    var clickedGlacierCoords = feature.geometry.coordinates
+                    
+                    getCoords(clickedGlacierCoords, mtState, glacier)
                 }); // end event listener
-
 
             })
 
-            // create variable to store clicked marker coordinates to send to bearingToCentroid()
-            var clickedCoords = [];
-            console.log(clickedCoords)
+            function getCoords(clickedGlacierCoords) {
+                //verify access to info
+                console.log(clickedGlacierCoords)
+                console.log(mtState)
+                console.log(glacier)
 
-            // call bearingToCentroid and send necessary info
-            bearingToCentroid(mtState, clickedCoords, glacier)
+                //call bearingToCentroid
+                bearingToCentroid(clickedGlacierCoords, mtState, glacier)
+            }
 
         } // end drawMap
 
 
 
-        function bearingToCentroid(mtState, coords, glacier) {
+        function bearingToCentroid(clickedGlacierCoords, mtState,  glacier) { //coords,
             // access to mtState, coords and glacier here
-            //    console.log(glacier)
-            //    console.log(mtState)
-            console.log(coords)
-
+                console.log(glacier)
+                console.log(mtState)
+                console.log(clickedGlacierCoords)
 
             // coordinates for center point
             var polygon = turf.polygon(mtState.features[0].geometry.coordinates);
@@ -139,18 +140,14 @@
             // add centerPoint marker to map
             var centerPoint = L.geoJson(center).addTo(map);
 
-
-
             // find bearing between the two points
-            var point1 = turf.point(coords);
+            var point1 = turf.point(clickedGlacierCoords);
             var point2 = turf.point(center.geometry.coordinates);
 
             //    console.log(point2)
 
-
             var bearing = turf.bearing(point2, point1);
             console.log(bearing)
-
 
             // add bearing to centroid tooltip
             centerPoint.bindTooltip(
