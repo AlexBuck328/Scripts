@@ -21,8 +21,14 @@ I used the following mapshaper command to simplify and filter to Montana, and ex
 
 I then used the process-csv.js script to filter the GNIS data to reflect the Feature Class "Glacier" located in Montana. After the mt-glaciers.json was created I used that file within the create-hex.js script to create a hexbin map reflecting glacier locations/density in Montana.
 
-## mt-glacier-hexgrid.html
+## Data Visualization
+
+### mt-glacier-hexgrid.html
 
 This file uses the mt-hexgrid-glaciers-15.json created with the create-hex.js script to provide visual represntation of glaciers across Montana. As the map displays, the highest density of glaciers is located within the parks boundaries. 
 
 ![Glaciers](images/glacier-hex.png)
+
+### index-bearing.html
+
+This file displays glacier locations as leaflet markers and a centroid marker for the center of Montana. When the user clicks on a glacier marker, the bearing from the Montana's centroid to the selected marker is displayed.
